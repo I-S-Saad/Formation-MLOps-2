@@ -6,7 +6,7 @@ Vérifie que tous les appels à `to_csv` faits dans le package
 Cela évite d'écrire l'index du DataFrame dans les fichiers CSV générés
 (données, prédictions, etc.).
 """
-
+import ast
 from pathlib import Path
 
 PACKAGE_ROOT = Path(__file__).parents[2] / "formation_mlops_2"
