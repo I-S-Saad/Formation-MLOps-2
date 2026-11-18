@@ -12,7 +12,24 @@ from pathlib import Path
 PACKAGE_ROOT = Path(__file__).parents[2] / "formation_mlops_2"
 
 
-
 def test_to_csv_called_with_index_false():
     # Given
-    assert False # noqa: B011
+    python_files = PACKAGE_ROOT.rglob("*.py")
+
+    # When
+    for file in python_files:
+        tree = ast.parse(file.read_text(encoding="utf-8"))
+
+        for node in ast.walk(tree):
+            if (
+                isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Attribute)
+                and node.func.attr == "to_csv"
+            ):
+                # Then
+                assert any(
+                    keyword.arg == "index"
+                    and isinstance(keyword.value, ast.Constant)
+                    and keyword.value.value is False
+                    for keyword in node.keywords
+                ), f"to_csv sans index=False dans {file}:{node.lineno}"
