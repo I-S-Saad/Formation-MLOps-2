@@ -28,6 +28,6 @@ jobs:
       - name: Install bandit
         run: uv pip install bandit
       - name: Check security
-        run: bandit -r ./scripts
+        run: uv run bandit -r ./scripts
       
 
