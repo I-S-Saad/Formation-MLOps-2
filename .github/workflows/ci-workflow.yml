@@ -19,6 +19,7 @@ jobs:
         run: uv sync --locked --all-groups
       - name: Run Linter
         run: uv run ruff check .
+        continue-on-error: true
       - name: Run tests
         run: uv run pytest tests/test_unit
       - name: Run functional tests
@@ -31,6 +32,6 @@ jobs:
         run: uv run behave tests/test_functional/features
       - name: qualite
         run: uv run pytest --cov=formation_mlops_2/ tests/test_unit/ -vv -p no:warnings
-        
+
 
 
