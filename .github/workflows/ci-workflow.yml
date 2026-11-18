@@ -29,5 +29,8 @@ jobs:
         run: uv pip install bandit
       - name: Check security
         run: uv run bandit -r ./scripts
-      
+      - name: Install detect-secrets
+        run: uv pip install detect-secrets
+      - name: Detect secrets
+        run: uv run git ls-files -z | xargs -0 detect-secrets-hook
 
