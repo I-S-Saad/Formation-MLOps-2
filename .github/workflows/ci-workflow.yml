@@ -21,4 +21,9 @@ jobs:
         uses : astral-sh/ruff-action@v3
       - name: Run tests
         run: uv run pytest
+      - name: Install vulture
+        run: uv install vulture
+      - name: Find dead code
+        run: uv run vulture scripts/ --min-confidence 80
+      
 
