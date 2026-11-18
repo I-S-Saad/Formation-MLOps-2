@@ -25,5 +25,9 @@ jobs:
         run: uv pip install vulture
       - name: Find dead code
         run: uv run vulture scripts/ --min-confidence 80
+      - name: Install bandit
+        run: uv pip install bandit
+      - name: Check security
+        run: bandit -r ./scripts
       
 
