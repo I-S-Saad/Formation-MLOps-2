@@ -32,5 +32,5 @@ jobs:
       - name: Install detect-secrets
         run: uv pip install detect-secrets
       - name: Detect secrets
-        run: uv run git ls-files -z | xargs -0 detect-secrets-hook
+        run: git ls-files -z | xargs -0 uv run detect-secrets-hook
 
