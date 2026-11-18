@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install uv
+      - name: Install uv #uv.lock not to modify manually , pyproject.toml  to see the added libraries with uv add ... dependencies only within hte group
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
@@ -19,12 +19,13 @@ jobs:
         run: uv sync --locked --all-groups
       - name: Ruff
         uses : astral-sh/ruff-action@v3
+        # ou le ruff format ...
       - name: Run tests
         run: uv run pytest
       - name: Install vulture
         run: uv pip install vulture
       - name: Find dead code
-        run: uv run vulture scripts/ --min-confidence 80
+        run: uv run vulture scripts/ --min-confidence 80 #100 recommended, l'utiliser en local avec moins de confiance 
       - name: Install bandit
         run: uv pip install bandit
       - name: Check security
@@ -33,4 +34,5 @@ jobs:
         run: uv pip install detect-secrets
       - name: Detect secrets
         run: git ls-files -z | xargs -0 uv run detect-secrets-hook
+        # detect-secrets scan
 
