@@ -29,4 +29,7 @@ jobs:
         run: uv run pytest tests/test_architecture
       - name: behave
         run: uv run behave tests/test_functional/features
+      - name: qualite
+        run: uv run pytest --cov=formation_mlops_2/ tests/test_unit/ -vv -p no:warnings
+
 
