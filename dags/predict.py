@@ -3,6 +3,7 @@ import sys
 from datetime import datetime, timedelta
 
 from airflow.sdk import dag, task
+import logging
 
 sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.dirname(__file__))))  # So that airflow can find config files
 
@@ -10,7 +11,10 @@ from dags.config import DATA_FOLDER, GENERATED_DATA_PATH
 from formation_mlops_2.feature_engineering_io import prepare_features_with_io
 from formation_mlops_2.train_and_predict_io import predict_with_io  # noqa
 
-
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
 # Here we use catchup=False, due to TP contexte, in other contexte either use catchup=True,
 # or have your code deal with eventual missed runs
 @dag(default_args={'owner': 'airflow'}, schedule=timedelta(minutes=2),
@@ -25,13 +29,17 @@ def predict():
         return features_path
 
     # Start completing predict task
-    def predict_with_io_task():
-        pass
+    @task
+    def predict_with_io_task(feature_path:str):
+        predict_with_io(features_path=feature_path, model_path='/home/jovyan/work/Formation-MLOps-2/models/model.joblib', predictions_folder='/home/jovyan/work/Formation-MLOps-2/data/predictions/')
+        
 
     # End completing predict task
 
-    # feature_path = prepare_features_with_io_task() # noqa
-    # predict_with_io_task(feature_path=feature_path) # noqa
-
+    feature_path = prepare_features_with_io_task() # noqa
+    logging.info("features are prepared...")
+    predict_with_io_task(feature_path=feature_path) # noqa
+    logging.info("predictions are completed...")
 
 predict_dag = predict()
+# Hello contains 5 bytes and echo adds a newline (1 byte).
