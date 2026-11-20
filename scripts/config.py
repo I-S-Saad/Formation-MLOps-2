@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 PROJECT_FOLDER = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -12,4 +13,6 @@ GENERATED_DATA_PATH = os.path.join(DATA_FOLDER,
 FEATURES_PATH = os.path.join(DATA_FOLDER, 'prepared_features.parquet')
 
 MODEL_REGISTRY_FOLDER = os.path.join(PROJECT_FOLDER, 'models')
-MODEL_PATH = os.path.join(MODEL_REGISTRY_FOLDER, '20260710-112838.joblib')  # To change when needed
+#MODEL_PATH = os.path.join(MODEL_REGISTRY_FOLDER, '20260710-112838.joblib')  # To change when needed
+timestamp = datetime.now().strftime('%Y%m%d-%H%M%S')
+MODEL_PATH = os.path.join(MODEL_REGISTRY_FOLDER, f'{timestamp}.joblib')
